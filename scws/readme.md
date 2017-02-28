@@ -98,6 +98,9 @@ scws.default.fpath = /usr/local/scws/etc
  echo '分词：'.$words."\n";
 ```
 
+### 6 在线API
+
+也可以使用在线API实现中文分词,API地址：http://www.xunsearch.com/scws/api.php，详细说明也在地址中。
 
 > 参考
 
