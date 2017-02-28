@@ -159,8 +159,8 @@ print_r($memStats);
 > 对于php 来说有两个不同版本的客户端，memcache是pecl扩展库版本，memcached是libmemcached版本。建议使用 memcached
 
 > Memcache 
-```
 
+```
 #修改php.ini添加： 
 [Memcache] 
 Memcache.allow_failover = 1 
@@ -171,7 +171,6 @@ Memcache.hash_function =crc32
 Ini_set(‘memcache.hash_strategy',' consistent '); 
 Ini_set(‘memcache.hash_function','crc32');
 ```
-
 
 > Memcached 
 
