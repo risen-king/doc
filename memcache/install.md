@@ -1,4 +1,5 @@
-che 
+
+## 1 安装 memcache 
 ```
 # 安装 libevent-devel 依赖 和 php-memcache API 
 [root@www www]# yum --enablerepo=remi install libevent-devel
@@ -125,7 +126,6 @@ Get key1 value:
 Get key2 value : 
 
 ```
-
 
 
 
