@@ -348,3 +348,41 @@ Array
 )
 
 ```
+
+### 6 分布式系统的良性运行
+> 在Memcache的实际使用中，遇到的最严重的问题，就是在增减服务器的时候，会导致大范围的缓存丢失，从而可能会引导数据库的性能瓶颈。
+
+> 对于php 来说有两个不同版本的客户端，memcache是pecl扩展库版本，memcached是libmemcached版本。建议使用 memcached
+
+> Memcache 
+```
+
+#修改php.ini添加： 
+[Memcache] 
+Memcache.allow_failover = 1 
+Memcache.hash_strategy =consistent 
+Memcache.hash_function =crc32 
+
+#ini_set方法： 
+Ini_set(‘memcache.hash_strategy',' consistent '); 
+Ini_set(‘memcache.hash_function','crc32');
+```
+
+
+> Memcached 
+
+```
+$mem = new memcached(); 
+$mem->addServers(array(array('127.0.0.1',11300,100),array('127.0.0.1',11301,0)));  
+
+$mem->setOption(Memcached::OPT_DISTRIBUTION, Memcached::DISTRIBUTION_CONSISTENT);  
+$mem->setOption(Memcached::OPT_HASH, Memcached::HASH_CRC);  
+
+for ($i=0;$i<10;$i++){  
+    $key = "item_$i";  
+    $arr = $mem->getServerByKey($key);  
+    echo ($key.":\t".$arr['port']."\n");  
+} 
+
+print_r($mem->getServerList());  
+```
