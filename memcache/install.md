@@ -128,11 +128,223 @@ Get key2 value :
 
 ```
 
+### 5 分布式部署
+#### 5.1 开启三个服务
 
+```
+[root@www memcache]# /usr/local/memcache/bin/memcached -d -p 11213 -u root -m 10 -c 1024 -t 8 -P /var/run/memcache.pid
+[root@www memcache]# /usr/local/memcache/bin/memcached -d -p 11214 -u root -m 10 -c 1024 -t 8 -P /var/run/memcache.pid
+[root@www memcache]# /usr/local/memcache/bin/memcached -d -p 11215 -u root -m 10 -c 1024 -t 8 -P /var/run/memcache.pid
 
+```
+#### 5.2 编写测试文件 distributed.php
 
+```
+[root@www memcache]# vim distributed.php
+<?php
+$mem = new Memcache;
+$mem->addServer('localhost',11213);
+$mem->addServer('localhost',11214);
+$mem->addServer('localhost',11215);
 
+$memStats = $mem->getExtendedStats();
+print_r($memStats);
 
+```
 
+```
+[root@www memcache]# php distributed.php
+Array
+(
+    [localhost:11213] => Array
+        (
+            [pid] => 17817
+            [uptime] => 606
+            [time] => 1488275226
+            [version] => 1.4.35
+            [libevent] => 1.4.13-stable
+            [pointer_size] => 64
+            [rusage_user] => 0.366944
+            [rusage_system] => 1.707740
+            [curr_connections] => 18
+            [total_connections] => 20
+            [connection_structures] => 19
+            [reserved_fds] => 40
+            [cmd_get] => 0
+            [cmd_set] => 0
+            [cmd_flush] => 0
+            [cmd_touch] => 0
+            [get_hits] => 0
+            [get_misses] => 0
+            [get_expired] => 0
+            [get_flushed] => 0
+            [delete_misses] => 0
+            [delete_hits] => 0
+            [incr_misses] => 0
+            [incr_hits] => 0
+            [decr_misses] => 0
+            [decr_hits] => 0
+            [cas_misses] => 0
+            [cas_hits] => 0
+            [cas_badval] => 0
+            [touch_hits] => 0
+            [touch_misses] => 0
+            [auth_cmds] => 0
+            [auth_errors] => 0
+            [bytes_read] => 14
+            [bytes_written] => 1310
+            [limit_maxbytes] => 10485760
+            [accepting_conns] => 1
+            [listen_disabled_num] => 0
+            [time_in_listen_disabled_us] => 0
+            [threads] => 8
+            [conn_yields] => 0
+            [hash_power_level] => 16
+            [hash_bytes] => 524288
+            [hash_is_expanding] => 0
+            [malloc_fails] => 0
+            [log_worker_dropped] => 0
+            [log_worker_written] => 0
+            [log_watcher_skipped] => 0
+            [log_watcher_sent] => 0
+            [bytes] => 0
+            [curr_items] => 0
+            [total_items] => 0
+            [expired_unfetched] => 0
+            [evicted_unfetched] => 0
+            [evictions] => 0
+            [reclaimed] => 0
+            [crawler_reclaimed] => 0
+            [crawler_items_checked] => 0
+            [lrutail_reflocked] => 0
+        )
 
+    [localhost:11214] => Array
+        (
+            [pid] => 17829
+            [uptime] => 600
+            [time] => 1488275227
+            [version] => 1.4.35
+            [libevent] => 1.4.13-stable
+            [pointer_size] => 64
+            [rusage_user] => 0.326950
+            [rusage_system] => 1.753733
+            [curr_connections] => 18
+            [total_connections] => 20
+            [connection_structures] => 19
+            [reserved_fds] => 40
+            [cmd_get] => 0
+            [cmd_set] => 0
+            [cmd_flush] => 0
+            [cmd_touch] => 0
+            [get_hits] => 0
+            [get_misses] => 0
+            [get_expired] => 0
+            [get_flushed] => 0
+            [delete_misses] => 0
+            [delete_hits] => 0
+            [incr_misses] => 0
+            [incr_hits] => 0
+            [decr_misses] => 0
+            [decr_hits] => 0
+            [cas_misses] => 0
+            [cas_hits] => 0
+            [cas_badval] => 0
+            [touch_hits] => 0
+            [touch_misses] => 0
+            [auth_cmds] => 0
+            [auth_errors] => 0
+            [bytes_read] => 14
+            [bytes_written] => 1310
+            [limit_maxbytes] => 10485760
+            [accepting_conns] => 1
+            [listen_disabled_num] => 0
+            [time_in_listen_disabled_us] => 0
+            [threads] => 8
+            [conn_yields] => 0
+            [hash_power_level] => 16
+            [hash_bytes] => 524288
+            [hash_is_expanding] => 0
+            [malloc_fails] => 0
+            [log_worker_dropped] => 0
+            [log_worker_written] => 0
+            [log_watcher_skipped] => 0
+            [log_watcher_sent] => 0
+            [bytes] => 0
+            [curr_items] => 0
+            [total_items] => 0
+            [expired_unfetched] => 0
+            [evicted_unfetched] => 0
+            [evictions] => 0
+            [reclaimed] => 0
+            [crawler_reclaimed] => 0
+            [crawler_items_checked] => 0
+            [lrutail_reflocked] => 0
+        )
 
+    [localhost:11215] => Array
+        (
+            [pid] => 17842
+            [uptime] => 593
+            [time] => 1488275226
+            [version] => 1.4.35
+            [libevent] => 1.4.13-stable
+            [pointer_size] => 64
+            [rusage_user] => 0.380942
+            [rusage_system] => 1.737735
+            [curr_connections] => 18
+            [total_connections] => 20
+            [connection_structures] => 19
+            [reserved_fds] => 40
+            [cmd_get] => 0
+            [cmd_set] => 0
+            [cmd_flush] => 0
+            [cmd_touch] => 0
+            [get_hits] => 0
+            [get_misses] => 0
+            [get_expired] => 0
+            [get_flushed] => 0
+            [delete_misses] => 0
+            [delete_hits] => 0
+            [incr_misses] => 0
+            [incr_hits] => 0
+            [decr_misses] => 0
+            [decr_hits] => 0
+            [cas_misses] => 0
+            [cas_hits] => 0
+            [cas_badval] => 0
+            [touch_hits] => 0
+            [touch_misses] => 0
+            [auth_cmds] => 0
+            [auth_errors] => 0
+            [bytes_read] => 14
+            [bytes_written] => 1310
+            [limit_maxbytes] => 10485760
+            [accepting_conns] => 1
+            [listen_disabled_num] => 0
+            [time_in_listen_disabled_us] => 0
+            [threads] => 8
+            [conn_yields] => 0
+            [hash_power_level] => 16
+            [hash_bytes] => 524288
+            [hash_is_expanding] => 0
+            [malloc_fails] => 0
+            [log_worker_dropped] => 0
+            [log_worker_written] => 0
+            [log_watcher_skipped] => 0
+            [log_watcher_sent] => 0
+            [bytes] => 0
+            [curr_items] => 0
+            [total_items] => 0
+            [expired_unfetched] => 0
+            [evicted_unfetched] => 0
+            [evictions] => 0
+            [reclaimed] => 0
+            [crawler_reclaimed] => 0
+            [crawler_items_checked] => 0
+            [lrutail_reflocked] => 0
+        )
+
+)
+
+```
