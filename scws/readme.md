@@ -102,7 +102,10 @@ scws.default.fpath = /usr/local/scws/etc
 > 参考
 
 [SCWS 中文分词](www.xunsearch.com/scws/docs.php#phpscws)
+
 [SCWS 样例1](https://github.com/xingchuan/scripts/blob/master/scws/test1.php)
+
 [SCWS 样例2](https://github.com/xingchuan/scripts/blob/master/scws/scws.php)
+
 [SCWS 样例3](https://github.com/xingchuan/scripts/blob/master/scws/scws_test.php)
 
