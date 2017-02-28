@@ -1,0 +1,77 @@
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+# 使用的用户和组
+user nginx nginx;
+# 指定工作衍生进程数(一般等于cpu的总核数或总核数的2倍)
+worker_processes 8;
+# 指定错误日志存放路径，错误日志记录级别可选项为:[debug | info | notice | warn | error | crit ]
+error_log /var/log/nginx/error.log  crit;
+# 指定 pid 存放路径
+pid /var/run/nginx.pid;
+
+# 指定文件描述符数量
+worker_rlimit_nofile 51200;
+
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    # 使用的网络 I/O 模型
+    use epoll;
+    # 允许的连接数
+    worker_connections  1024;
+}
+
+
+http {
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  /var/log/nginx/access.log  main;
+  
+    #设置客户端能够上传的文件大小
+    client_max_body_size 8m;
+    
+    # 网络性能优化
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    
+    keepalive_timeout   60;
+    
+    types_hash_max_size 2048;
+    
+    fastcgi_connect_timeout 300;
+    fastcgi_send_timeout 300;
+    fastcgi_read_timeout 300;
+    fastcgi_buffer_size 64k;
+    fastcgi_buffers 4 64k;
+    fastcgi_busy_buffers_size 128k;
+    fastcgi_temp_file_write_size 128k;
+
+
+    # 默认情况下，nginx不支持自定义404错误页面，只有这个指令被设置为on，nginx才支持将404错误重定向
+    # 在nginx中404错误重定向生效的前提是设置了fastcgi_intercept_errors on,并且正确的设置了error_page这个选项（包括语法和对应的404页面) 
+    fastcgi_intercept_errors on;
+
+    # 开启gzip
+    gzip on;
+    gzip_min_length 1k;
+    gzip_buffers 4 16k;
+    gzip_http_version 1.1;
+    gzip_comp_level 2;
+    gzip_types text/plain application/x-javascript text/css application/xml;
+    gzip_vary on;
+
+
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+}
