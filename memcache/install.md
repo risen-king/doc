@@ -1,4 +1,3 @@
-
 ## 1 安装 memcache 
 ```
 # 安装 libevent-devel 依赖 和 php-memcache API 
@@ -25,19 +24,6 @@
 ```
 
 
-```
-# 安装  php-memcache API 
-[root@www www]# yum --enablerepo=remi install php-memcache
-
-# 编写 phpinfo 文件
-[root@www www]# vim phpinfo.php
-<?php 
-phpinfo();
-
-# 开启 php 服务器后访问 localhost:8080/phpinfo.php 确认 php-memcache 扩展开启
-[root@www www]# php -S localhost:8080 -t /var/www &
-
-```
 >  
 > 参数
 > 
@@ -57,7 +43,22 @@ phpinfo();
 >  
 
 
-## 3 测试
+## 3 安装  php-memcache API 
+```
+
+[root@www www]# yum --enablerepo=remi install php-memcache
+
+# 编写 phpinfo 文件
+[root@www www]# vim phpinfo.php
+<?php 
+phpinfo();
+
+# 开启 php 服务器后访问 localhost:8080/phpinfo.php 确认 php-memcache 扩展开启
+[root@www www]# php -S localhost:8080 -t /var/www &
+
+```
+
+## 4 测试
 
 ```
 [root@www www]# vim memcache.php
