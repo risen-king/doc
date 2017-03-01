@@ -108,6 +108,9 @@ VALUES
   (8,9,5,3);
   
 # 清单 6. Catalog 视图将把数据整合到虚拟表中
+# 在视图中，字段 id 将指回 Inventory 表中的零件条目。
+# partno 和 description 列是要搜索的主要文本，
+# 而 assembly 和 model 列用作进一步过滤结果的组
 
 CREATE OR REPLACE VIEW `Catalog` AS
 SELECT
