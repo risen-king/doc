@@ -11,7 +11,9 @@ yum remove php*
 
 ### 安装 php php-fpm  及其他组件
 ```sh
-yum --enablerepo=remi-php71 install   php php-fpm php-mysql    php-mbstring  php-xml php-mcrypt  php-gd php-ldap php-pear php-xmlrpc php-curl  php-sockets php-memcache
+yum --enablerepo=remi-php71 install   php php-fpm php-mysql   \ 
+php-mbstring  php-xml php-mcrypt  php-gd php-ldap php-pear    \
+php-xmlrpc php-curl  php-sockets php-memcache
 ```
 
 ### 查找 php 安装 目录
