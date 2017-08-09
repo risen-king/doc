@@ -5,7 +5,7 @@
 drwxrwxrwx. 12 nginx nginx 4096 8月   9 14:34 /usr/local/nginx/html/phpMyAdmin
 ```
  
-### 2 新建配置文件 /usr/local/nginx/conf/conf.d
+### 2 新建配置文件 /usr/local/nginx/conf/conf.d/php-my-admin.conf
 
 ``` 
 server {
