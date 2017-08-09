@@ -1,0 +1,95 @@
+
+# sftp/scp
+
+### sftp
+
+```
+[root@localhost ~]# sftp root@192.168.183.129
+Connecting to 192.168.183.129...
+root@192.168.183.129's password:
+
+```
+
+
+###  scp
+
+> 如果已经知道服务器上的文件名了， 那么最简单的文件传输则是透过 scp 这个指令喔！最简单的 scp 用法如下：
+
+```
+[root@www ~]# scp [-pr] [-l 速率] file  [账号@]主机:目录名 <==上传
+[root@www ~]# scp [-pr] [-l 速率] [账号@]主机:file  目录名 <==下载
+选项与参数：
+-p ：保留原本档案的权限数据；
+-r ：复制来源为目录时，可以复制整个目录 (含子目录)
+-l ：可以限制传输的速度，单位为 Kbits/s ，例如 [-l 800] 代表传输速限 100Kbytes/s
+
+# 1. 将本机的 /etc/hosts* 全部复制到 127.0.0.1 上面的 student 家目录内
+[root@www ~]# scp /etc/hosts* student@127.0.0.1:~
+student@127.0.0.1's password: <==输入 student 密码
+hosts                        100%  207         0.2KB/s   00:00
+hosts.allow                  100%  161         0.2KB/s   00:00
+hosts.deny                   100%  347         0.3KB/s   00:00
+# 文件名显示                   进度  容量(bytes) 传输速度  剩余时间
+# 你可以仔细看，出现的讯息有五个字段，意义如上所示。
+
+# 2. 将 127.0.0.1 这部远程主机的 /etc/bashrc 复制到本机的 /tmp 底下
+[root@www ~]# scp student@127.0.0.1:/etc/bashrc /tmp
+```
+> 其实上传或下载的重点是那个冒号 (:) 啰！连接在冒号后面的就是远程主机的档案。 因此，如果冒号在前，代表的就是从远程主机下载下来，如果冒号在后，则代表本机数据上传啦！ 而如果想要复制目录的话，那么可以加上 -r 的选项！
+
+
+
+---
+
+# rz/sz
+
+> sz/rz 是基于ZModem传输协议的命令。windows 端需要支持ZModem的SSH客户端，如 Xshell、secureCRT
+> 
+> 其中，对于sz和rz的理解与记忆我用了如下的方法（很多时候容易搞混）：
+> 
+> sz中的s意为send（发送），告诉客户端，我（服务器）要发送文件 send to cilent，就等同于客户端在下载。
+> 
+> rz中的r意为received（接收），告诉客户端，我（服务器）要接收文件 received by cilent，就等同于客户端在上传。
+> 
+> 记住一点，不论是send还是received，动作都是在服务器上发起的。我们习惯了说上传或是下载，其实大可不必。使用这两个命令，只要思考一点，是要把文件从服务器上发送出去，还是从客户端接上接收回来，就可以了。 
+
+> Xshell 还支持直接拖拽上传
+
+安装：
+
+```
+[root@localhost ~]# yum install -y lrzsz
+```
+
+rz用法：
+
+> 输入rz回车后，会出现文件选择对话框，选择需要上传文件，一次可以指定多个文件，上传到服务器的路径为当前执行rz命令的目录。
+
+```
+[root@localhost ~]# rz
+
+```
+
+
+ sz用法：
+
+> 下载一个文件
+> 
+```
+[root@localhost ~]# sz tuidao-x.jpg
+```
+
+> 
+>下载多个文件
+
+```
+[root@localhost ~]# sz tuidao-x.jpg tuidao-x.jpg.0
+```
+
+> 
+>下载dir目录下的所有文件，不包含dir下的文件夹
+
+```
+[root@localhost ~]# sz test/
+```
+
