@@ -1,3 +1,4 @@
+```
 server {
         listen       80;
         server_name  php-my-admin.localhost;
@@ -19,3 +20,4 @@ server {
 	     include        fastcgi.conf;
 	 }
 }
+```
